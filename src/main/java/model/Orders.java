@@ -14,3 +14,4 @@ public class Orders {
     private PageInfo pageInfo;
     private List<Station> availableStations;
 }
+

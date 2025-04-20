@@ -25,9 +25,11 @@ public class CreateNewCourierReturnBodyWithOkTest {
     public void setUp() {
         testData = new ArrayList<>();
         account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
-                faker.name().firstName());
+               faker.funnyName().name(),
+               faker.internet().password(),
+               faker.name().firstName());
+            //account = new CourierAccount("vvbnmjuu", "oiuuyuy", "vcvcder");
+            //- при подборе индивидуальных данных, которые нельзя повторить, тест стабильно проходит
         testData.add(account);
     }
 
@@ -45,3 +47,5 @@ public class CreateNewCourierReturnBodyWithOkTest {
         steps.delete(testData);
     }
 }
+
+

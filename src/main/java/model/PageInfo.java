@@ -12,3 +12,4 @@ public class PageInfo {
     private int total;
     private int limit;
 }
+

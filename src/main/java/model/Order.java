@@ -29,3 +29,4 @@ public class Order {
                 metroStation, phone, rentTime, deliveryDate, comment, Arrays.toString(color));
     }
 }
+

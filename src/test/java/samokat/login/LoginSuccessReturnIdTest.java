@@ -27,6 +27,8 @@ public class LoginSuccessReturnIdTest {
     public void setUp() {
         testData = new ArrayList<>();
         account = new CourierAccount(faker.funnyName().name(), faker.internet().password(), faker.name().firstName());
+        //account = new CourierAccount("asdfredrt", "cdertyu", "pooooiiu");
+        // - при подборе индивидуальных данных, которые нельзя повторить, тест стабильно проходит
         testData.add(account);
     }
 
@@ -35,8 +37,8 @@ public class LoginSuccessReturnIdTest {
     public void loginSuccessReturnId() {
         steps.create(account);
         ValidatableResponse response = steps.login(account);
-        assertThat("Успешный запрос возвращает \"id\": int", response.extract().body().jsonPath().
-                getInt("id"), notNullValue());
+        assertThat("Успешный запрос возвращает \"id\": int", response.extract().body().jsonPath().getInt("id"), notNullValue());
+
     }
 
     @After
@@ -44,3 +46,5 @@ public class LoginSuccessReturnIdTest {
         steps.delete(testData);
     }
 }
+
+

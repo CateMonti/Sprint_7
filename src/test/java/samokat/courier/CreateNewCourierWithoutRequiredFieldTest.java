@@ -25,10 +25,11 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
-        account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
-                faker.name().firstName());
+//        account = new CourierAccount(
+//                faker.funnyName().name(),
+//                faker.internet().password(),
+//                faker.name().firstName());
+        account = new CourierAccount("gtgрtрgg", "kktррgtgr", "aррtwwd");
         testData.add(account);
     }
 
@@ -36,9 +37,9 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @DisplayName("Создание курьера - если одного из полей нет, запрос возвращает ошибку")
     public void createFieldlessReturnsError() {
         account = new CourierAccount();
-        testData.add(account);
         account.setLogin(faker.funnyName().name());
         account.setFirstName(faker.name().firstName());
+        testData.add(account);
         assertThat("Пароль обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
                 equalTo(HttpStatus.SC_BAD_REQUEST));
@@ -48,9 +49,9 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @DisplayName("Создание курьера - если одного из полей нет, запрос возвращает ошибку")
     public void createFieldlessReturnsError2() {
         account = new CourierAccount();
-        testData.add(account);
         account.setPassword(faker.internet().password());
         account.setFirstName(faker.name().firstName());
+        testData.add(account);
         assertThat("Логин обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
                 equalTo(HttpStatus.SC_BAD_REQUEST));
@@ -60,10 +61,10 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @DisplayName("Создание курьера - если одного из полей нет, запрос возвращает ошибку")
     @Description("У портала баг. Принимает создание пользователя без firstName")
     public void createFieldlessReturnsError3() {
-        account = new CourierAccount();
-        testData.add(account);
-        account.setLogin(faker.funnyName().name());
-        account.setPassword(faker.internet().password());
+        account = new CourierAccount(
+                faker.funnyName().name(),
+                faker.internet().password(),
+                "");
         assertThat("Имя обязательное поле, ждем 400 код", steps.create(account).extract().statusCode(),
                 equalTo(HttpStatus.SC_BAD_REQUEST));
     }
@@ -73,3 +74,4 @@ public class CreateNewCourierWithoutRequiredFieldTest {
         steps.delete(testData);
     }
 }
+

@@ -35,8 +35,8 @@ public class LoginCreateFieldlessReturnsErrorTest {
     public void createFieldlessReturnsError() {
         steps.create(account);
         CourierAccount wrongAccount = new CourierAccount();
-        testData.add(wrongAccount);
         wrongAccount.setPassword(account.getPassword());
+        testData.add(wrongAccount);
         assertThat("Пароль обязательное поле, ждем 400 код", steps.login(wrongAccount).extract().statusCode(),
                 equalTo(HttpStatus.SC_BAD_REQUEST));
     }
@@ -46,3 +46,4 @@ public class LoginCreateFieldlessReturnsErrorTest {
         steps.delete(testData);
     }
 }
+

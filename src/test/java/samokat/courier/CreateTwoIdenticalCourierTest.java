@@ -4,10 +4,14 @@ import com.github.javafaker.Faker;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
 import model.CourierAccount;
+import org.junit.After;
 import samokat.steps.Steps;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -18,14 +22,18 @@ public class CreateTwoIdenticalCourierTest {
     private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
+    private List<CourierAccount> testData;
 
     @Before
     public void setUp() {
+        testData = new ArrayList<>();
         account = new CourierAccount(
                 faker.funnyName().name(),
                 faker.internet().password(),
                 faker.name().firstName());
+        testData.add(account);
     }
+
 
     @Test
     @DisplayName("Создание курьера - нельзя создать двух одинаковых курьеров")
@@ -36,6 +44,12 @@ public class CreateTwoIdenticalCourierTest {
 
         ValidatableResponse createSecond = steps.create(account);
         int secondStatusCode = createSecond.extract().statusCode();
-        assertNotEquals("Статус код не должен быть 201", secondStatusCode, equalTo(HttpStatus.SC_CREATED));
+        assertNotEquals("Статус код должен быть 409", secondStatusCode, equalTo(HttpStatus.SC_CONFLICT));
+    }
+
+    @After
+    public void cleanUp() {
+        steps.delete(testData);
     }
 }
+

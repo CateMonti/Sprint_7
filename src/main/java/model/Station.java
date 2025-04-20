@@ -12,3 +12,4 @@ public class Station {
     private String number;
     private String color;
 }
+

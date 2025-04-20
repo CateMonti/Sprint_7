@@ -19,3 +19,4 @@ public class CourierAccount {
         return String.format("Аккаунт курьера. Логин: %s; Пароль: %s; Имя: %s.", login, password, firstName);
     }
 }
+

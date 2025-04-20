@@ -47,6 +47,7 @@ public class LoginCreateFieldlessReturnsError2Test {
 
     @After
     public void cleanUp() {
-    steps.delete(testData);
+        steps.delete(testData);
     }
 }
+

@@ -33,6 +33,7 @@ public class CreateNewCourierWithDuplicateLoginTest {
         testData.add(account);
     }
 
+
     @Test
     @DisplayName("Создание курьера - если создать пользователя с логином, который уже есть, возвращается ошибка")
     public void createIdenticalLoginForbidden() {
@@ -46,7 +47,7 @@ public class CreateNewCourierWithDuplicateLoginTest {
         testData.add(courierSecondAccount);
         ValidatableResponse createSecond = steps.create(courierSecondAccount);
         statusCode = createSecond.extract().statusCode();
-        assertNotEquals("Статус код не должен быть 201", statusCode, equalTo(HttpStatus.SC_CREATED));
+        assertThat("Статус код ндолжен быть 409", statusCode, equalTo(HttpStatus.SC_CONFLICT));
     }
 
     @After
@@ -54,3 +55,4 @@ public class CreateNewCourierWithDuplicateLoginTest {
         steps.delete(testData);
     }
 }
+
