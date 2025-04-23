@@ -17,7 +17,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateNewCourierTest {
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -25,10 +24,16 @@ public class CreateNewCourierTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
         account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
-                faker.name().firstName());
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 
@@ -46,4 +51,3 @@ public class CreateNewCourierTest {
         steps.delete(testData);
     }
 }
-

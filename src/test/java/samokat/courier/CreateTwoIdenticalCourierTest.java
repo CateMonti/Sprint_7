@@ -19,7 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotEquals;
 
 public class CreateTwoIdenticalCourierTest {
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -27,13 +26,18 @@ public class CreateTwoIdenticalCourierTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
         account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
-                faker.name().firstName());
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
-
 
     @Test
     @DisplayName("Создание курьера - нельзя создать двух одинаковых курьеров")
@@ -52,4 +56,5 @@ public class CreateTwoIdenticalCourierTest {
         steps.delete(testData);
     }
 }
+
 

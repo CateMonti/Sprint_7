@@ -19,7 +19,6 @@ public class LoginIncorrectAccountShowErrorTest {
 
     private static final String ACCOUNT_ERROR = "Учетная запись не найдена";
 
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -27,7 +26,16 @@ public class LoginIncorrectAccountShowErrorTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
-        account = new CourierAccount(faker.funnyName().name(), faker.internet().password(), faker.name().firstName());
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
+        account = new CourierAccount(
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 
@@ -35,7 +43,7 @@ public class LoginIncorrectAccountShowErrorTest {
     @DisplayName("система вернет ошибку, если неправильно указан логин или пароль")
     public void loginIncorrectAccountShowError() {
         steps.create(account);
-        CourierAccount wrongAccount = new CourierAccount(faker.funnyName().name(), account.getPassword(),
+        CourierAccount wrongAccount = new CourierAccount(steps.generateRandomString(8), account.getPassword(),
                 account.getFirstName());
         testData.add(wrongAccount);
         ValidatableResponse response = steps.login(wrongAccount);
@@ -48,4 +56,5 @@ public class LoginIncorrectAccountShowErrorTest {
         steps.delete(testData);
     }
 }
+
 

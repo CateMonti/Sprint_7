@@ -18,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotEquals;
 
 public class CreateNewCourierWithDuplicateLoginTest {
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -26,13 +25,18 @@ public class CreateNewCourierWithDuplicateLoginTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
         account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
-                faker.name().firstName());
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
-
 
     @Test
     @DisplayName("Создание курьера - если создать пользователя с логином, который уже есть, возвращается ошибка")
@@ -42,8 +46,8 @@ public class CreateNewCourierWithDuplicateLoginTest {
         assertThat("Создали первого курьера. Код 201", statusCode, equalTo(HttpStatus.SC_CREATED));
         CourierAccount courierSecondAccount = new CourierAccount(
                 account.getLogin(),
-                faker.internet().password(),
-                faker.name().firstName());
+                steps.generateRandomString(8),
+                steps.generateRandomString(8));
         testData.add(courierSecondAccount);
         ValidatableResponse createSecond = steps.create(courierSecondAccount);
         statusCode = createSecond.extract().statusCode();
@@ -55,4 +59,3 @@ public class CreateNewCourierWithDuplicateLoginTest {
         steps.delete(testData);
     }
 }
-

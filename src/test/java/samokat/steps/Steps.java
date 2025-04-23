@@ -9,6 +9,7 @@ import model.Order;
 import org.apache.http.HttpStatus;
 
 import java.util.List;
+import java.util.Random;
 
 import static io.restassured.RestAssured.given;
 
@@ -70,5 +71,18 @@ public class Steps {
                 .header("Content-Type", "application/json")
                 .get(baseUrl + "/orders");
     }
+
+    @Step("Метод для генерации случайной строки из строчных английских букв")
+    public String generateRandomString(int length) {
+        String letters = "abcdefghijklmnopqrstuvwxyz";
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(letters.length());
+            sb.append(letters.charAt(index));
+        }
+        return sb.toString();
+    }
 }
+
 

@@ -16,7 +16,6 @@ import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 
 public class CreateNewCourierReturnBodyWithOkTest {
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -24,12 +23,16 @@ public class CreateNewCourierReturnBodyWithOkTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
         account = new CourierAccount(
-               faker.funnyName().name(),
-               faker.internet().password(),
-               faker.name().firstName());
-            //account = new CourierAccount("vvbnmjuu", "oiuuyuy", "vcvcder");
-            //- при подборе индивидуальных данных, которые нельзя повторить, тест стабильно проходит
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 

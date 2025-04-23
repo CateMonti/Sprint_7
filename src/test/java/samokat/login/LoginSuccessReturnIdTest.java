@@ -18,7 +18,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LoginSuccessReturnIdTest {
 
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -26,9 +25,16 @@ public class LoginSuccessReturnIdTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
-        account = new CourierAccount(faker.funnyName().name(), faker.internet().password(), faker.name().firstName());
-        //account = new CourierAccount("asdfredrt", "cdertyu", "pooooiiu");
-        // - при подборе индивидуальных данных, которые нельзя повторить, тест стабильно проходит
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
+        account = new CourierAccount(
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 
@@ -37,8 +43,8 @@ public class LoginSuccessReturnIdTest {
     public void loginSuccessReturnId() {
         steps.create(account);
         ValidatableResponse response = steps.login(account);
-        assertThat("Успешный запрос возвращает \"id\": int", response.extract().body().jsonPath().getInt("id"), notNullValue());
-
+        assertThat("Успешный запрос возвращает \"id\": int", response.extract().body().jsonPath().
+                getInt("id"), notNullValue());
     }
 
     @After
@@ -46,5 +52,6 @@ public class LoginSuccessReturnIdTest {
         steps.delete(testData);
     }
 }
+
 
 

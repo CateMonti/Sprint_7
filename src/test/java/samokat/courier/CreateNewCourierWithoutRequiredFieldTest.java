@@ -17,7 +17,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CreateNewCourierWithoutRequiredFieldTest {
-    private final Faker faker = new Faker(new Locale("en"));
+
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -25,11 +25,16 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
-//        account = new CourierAccount(
-//                faker.funnyName().name(),
-//                faker.internet().password(),
-//                faker.name().firstName());
-        account = new CourierAccount("gtgрtрgg", "kktррgtgr", "aррtwwd");
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
+        account = new CourierAccount(
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 
@@ -37,8 +42,8 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @DisplayName("Создание курьера - если одного из полей нет, запрос возвращает ошибку")
     public void createFieldlessReturnsError() {
         account = new CourierAccount();
-        account.setLogin(faker.funnyName().name());
-        account.setFirstName(faker.name().firstName());
+        account.setLogin(steps.generateRandomString(8));
+        account.setFirstName(steps.generateRandomString(8));
         testData.add(account);
         assertThat("Пароль обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
@@ -49,8 +54,8 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @DisplayName("Создание курьера - если одного из полей нет, запрос возвращает ошибку")
     public void createFieldlessReturnsError2() {
         account = new CourierAccount();
-        account.setPassword(faker.internet().password());
-        account.setFirstName(faker.name().firstName());
+        account.setPassword(steps.generateRandomString(8));
+        account.setFirstName(steps.generateRandomString(8));
         testData.add(account);
         assertThat("Логин обязательное поле, ждем 400 код",
                 steps.create(account).extract().statusCode(),
@@ -62,9 +67,10 @@ public class CreateNewCourierWithoutRequiredFieldTest {
     @Description("У портала баг. Принимает создание пользователя без firstName")
     public void createFieldlessReturnsError3() {
         account = new CourierAccount(
-                faker.funnyName().name(),
-                faker.internet().password(),
+                steps.generateRandomString(8),
+                steps.generateRandomString(8),
                 "");
+
         assertThat("Имя обязательное поле, ждем 400 код", steps.create(account).extract().statusCode(),
                 equalTo(HttpStatus.SC_BAD_REQUEST));
     }
@@ -74,4 +80,5 @@ public class CreateNewCourierWithoutRequiredFieldTest {
         steps.delete(testData);
     }
 }
+
 

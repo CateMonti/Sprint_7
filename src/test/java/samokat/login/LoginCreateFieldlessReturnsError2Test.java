@@ -19,7 +19,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LoginCreateFieldlessReturnsError2Test {
 
-    private final Faker faker = new Faker(new Locale("en"));
     private final Steps steps = new Steps();
     private CourierAccount account;
     private List<CourierAccount> testData;
@@ -27,7 +26,16 @@ public class LoginCreateFieldlessReturnsError2Test {
     @Before
     public void setUp() {
         testData = new ArrayList<>();
-        account = new CourierAccount(faker.funnyName().name(), faker.internet().password(), faker.name().firstName());
+
+        String randomName = steps.generateRandomString(8);
+        String randomPassword = steps.generateRandomString(8);
+        String randomFirstName = steps.generateRandomString(8);
+
+        account = new CourierAccount(
+                randomName,
+                randomPassword,
+                randomFirstName);
+
         testData.add(account);
     }
 
@@ -50,4 +58,5 @@ public class LoginCreateFieldlessReturnsError2Test {
         steps.delete(testData);
     }
 }
+
 
